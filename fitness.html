@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#0f1115" />
+    <title>FitnessPro</title>
+    <style>
+      :root {
+        --primary: #00e676;
+        --primary-dim: rgba(0, 230, 118, 0.15);
+        --bg: #0f1115;
+        --card: #181b21;
+        --card-hover: #1f232a;
+        --text: #e6e8eb;
+        --text-muted: #8b929a;
+        --border: #2a2d35;
+        --radius: 14px;
+        --shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      [data-theme="light"] {
+        --bg: #f4f6f8;
+        --card: #ffffff;
+        --card-hover: #f0f2f5;
+        --text: #1a1d23;
+        --text-muted: #6b7280;
+        --border: #e2e5ea;
+        --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        --primary-dim: rgba(0, 200, 100, 0.1);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+        padding-top: 70px;
+        transition:
+          background var(--transition),
+          color var(--transition);
+      }
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--card);
+        padding: 0.8rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: var(--shadow);
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        transition: background var(--transition);
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: -0.5px;
+      }
+      .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .theme-toggle,
+      .menu-toggle {
+        background: none;
+        border: none;
+        color: var(--text);
+        font-size: 1.2rem;
+        cursor: pointer;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background var(--transition);
+        font-family: system-ui, sans-serif;
+      }
+      .theme-toggle:hover,
+      .menu-toggle:hover {
+        background: var(--primary-dim);
+      }
+      .menu-toggle {
+        display: none;
+      }
+
+      nav {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding: 0 1rem;
+      }
+      nav::-webkit-scrollbar {
+        display: none;
+      }
+      nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        padding: 0.5rem 0.8rem;
+        border-radius: 20px;
+        white-space: nowrap;
+        transition: var(--transition);
+      }
+      nav a:hover,
+      nav a.active {
+        background: var(--primary-dim);
+        color: var(--primary);
+      }
+
+      main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+      }
+      section {
+        background: var(--card);
+        padding: 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        transition:
+          background var(--transition),
+          transform 0.2s;
+      }
+      section:hover {
+        transform: translateY(-2px);
+      }
+      h2 {
+        color: var(--primary);
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 0.85rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font-size: 1rem;
+        margin-bottom: 0.6rem;
+        transition:
+          border var(--transition),
+          box-shadow var(--transition);
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-dim);
+      }
+      button {
+        background: var(--primary);
+        color: #0a0c10;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        overflow: hidden;
+      }
+      button:hover {
+        opacity: 0.92;
+        transform: translateY(-1px);
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+      button.secondary {
+        background: var(--card-hover);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      button.danger {
+        background: #ef4444;
+        color: #fff;
+      }
+      button.export-btn {
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        color: #fff;
+      }
+      button.gen-btn {
+        background: linear-gradient(135deg, #00e676, #00c853);
+        color: #000;
+      }
+
+      .timer-display {
+        font-size: 3.5rem;
+        font-weight: 800;
+        text-align: center;
+        margin: 1rem 0;
+        font-variant-numeric: tabular-nums;
+      }
+      .timer-phase {
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        display: inline-block;
+      }
+      .timer-phase.work {
+        background: var(--primary-dim);
+        color: var(--primary);
+      }
+      .timer-phase.rest {
+        background: rgba(255, 152, 0, 0.15);
+        color: #ff9800;
+      }
+      .timer-controls {
+        display: flex;
+        gap: 0.6rem;
+      }
+      .timer-controls button {
+        flex: 1;
+      }
+
+      .filter-bar {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .filter-bar button {
+        width: auto;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        background: var(--card-hover);
+        border: 1px solid var(--border);
+      }
+      .filter-bar button.active {
+        background: var(--primary);
+        color: #000;
+        border-color: var(--primary);
+      }
+      .exercise-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+      }
+      .exercise-card {
+        background: var(--bg);
+        padding: 1rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        transition: var(--transition);
+      }
+      .exercise-card:hover {
+        border-color: var(--primary);
+      }
+      .exercise-card h3 {
+        color: var(--primary);
+        margin-bottom: 0.2rem;
+        font-size: 1.05rem;
+      }
+      .exercise-card .muscle {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .exercise-card .desc {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+        color: var(--text-muted);
+      }
+      .exercise-card button {
+        width: 100%;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+      }
+
+      /* Generator Specific */
+      .gen-output {
+        margin-top: 1rem;
+        background: var(--bg);
+        padding: 1rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        display: none;
+      }
+      .gen-output.active {
+        display: block;
+      }
+      .gen-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .gen-item:last-child {
+        border: none;
+      }
+      .gen-details {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      .gen-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .gen-actions button {
+        flex: 1;
+      }
+
+      /* Water Tracker Specific */
+      .water-progress-bg {
+        background: var(--bg);
+        height: 14px;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .water-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #00e676, #00c853);
+        border-radius: 10px;
+        transition: width 0.4s ease;
+      }
+      .water-display {
+        font-size: 2.8rem;
+        font-weight: 800;
+        text-align: center;
+        color: var(--primary);
+        margin: 0.5rem 0;
+      }
+      .water-goal {
+        text-align: center;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+      }
+      .water-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .water-buttons button {
+        flex: 1;
+        min-width: 100px;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+        nav {
+          position: fixed;
+          top: 60px;
+          left: 0;
+          right: 0;
+          background: var(--card);
+          flex-direction: column;
+          padding: 1rem;
+          gap: 0.5rem;
+          display: none;
+          box-shadow: var(--shadow);
+        }
+        nav.open {
+          display: flex;
+        }
+        .timer-display,
+        .water-display {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">FitnessPro</div>
+      <div class="header-controls">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">◑</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+      </div>
+    </header>
+
+    <nav id="nav">
+      <a href="#workout">Workout</a>
+      <a href="#bmi">BMI</a>
+      <a href="#generator">Generator</a>
+      <a href="#water">Water</a>
+      <a href="#insights">Insights</a>
+      <a href="#timer">Timer</a>
+      <a href="#calories">Calories</a>
+      <a href="#exercises">Exercises</a>
+      <a href="#export">Export</a>
+    </nav>
+
+    <main>
+      <!-- Workout Routine -->
+      <section id="workout">
+        <h2>Today's Routine</h2>
+        <ul id="workout-list" style="list-style: none"></ul>
+        <button class="secondary" onclick="clearWorkout()" style="margin-top: 1rem">
+          Clear Routine
+        </button>
+      </section>
+
+      <!-- BMI Calculator -->
+      <section id="bmi">
+        <h2>BMI Calculator</h2>
+        <div class="grid-2">
+          <input type="number" id="weight" placeholder="Weight (kg)" />
+          <input type="number" id="height" placeholder="Height (cm)" />
+        </div>
+        <button onclick="calcBMI()">Calculate</button>
+        <div
+          id="bmi-result"
+          style="
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--primary-dim);
+            border-radius: var(--radius);
+            text-align: center;
+            display: none;
+          "
+        ></div>
+      </section>
+
+      <!-- Smart Routine Generator -->
+      <section id="generator">
+        <h2>AI Routine Generator</h2>
+        <div class="grid-2">
+          <select id="gen-goal">
+            <option value="muscle">Muscle Gain</option>
+            <option value="fatloss">Fat Loss</option>
+            <option value="strength">Strength</option>
+          </select>
+          <select id="gen-time">
+            <option value="20">20 Minutes</option>
+            <option value="30">30 Minutes</option>
+            <option value="45" selected>45 Minutes</option>
+            <option value="60">60 Minutes</option>
+          </select>
+          <select id="gen-equip">
+            <option value="bodyweight">Bodyweight Only</option>
+            <option value="dumbbells">Dumbbells</option>
+            <option value="gym">Full Gym</option>
+          </select>
+          <select id="gen-level">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+        <button class="gen-btn" onclick="generateRoutine()">Generate Routine</button>
+
+        <div class="gen-output" id="gen-output">
+          <h3 style="margin-bottom: 0.8rem; color: var(--text)">Generated Plan</h3>
+          <div id="gen-list"></div>
+          <div class="gen-actions">
+            <button onclick="loadGeneratedToWorkout()">Add to My Workout</button>
+            <button
+              class="secondary"
+              onclick="document.getElementById('gen-output').classList.remove('active')"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Water Intake Tracker -->
+      <section id="water">
+        <h2>Water Intake</h2>
+        <div class="water-display" id="water-display">0 ml</div>
+        <div class="water-goal" id="water-goal-text">Daily Goal: 2500 ml</div>
+        <div class="water-progress-bg">
+          <div class="water-progress-fill" id="water-progress"></div>
+        </div>
+        <div class="water-buttons">
+          <button class="secondary" onclick="addWater(250)">+ 250 ml</button>
+          <button class="secondary" onclick="addWater(500)">+ 500 ml</button>
+          <button class="secondary" onclick="addWater(750)">+ 750 ml</button>
+        </div>
+        <button class="secondary" onclick="resetWater()" style="margin-top: 0.8rem; width: 100%">
+          Reset Today
+        </button>
+      </section>
+
+      <!-- Insights -->
+      <section id="insights">
+        <h2>Quick Stats</h2>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+          "
+        >
+          <div
+            style="
+              background: var(--bg);
+              padding: 1rem;
+              border-radius: var(--radius);
+              text-align: center;
+              border: 1px solid var(--border);
+            "
+          >
+            <h3 id="ins-bmi" style="font-size: 2rem; color: var(--primary); margin: 0">--</h3>
+            <p style="color: var(--text-muted); margin-top: 0.3rem">Last BMI</p>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              padding: 1rem;
+              border-radius: var(--radius);
+              text-align: center;
+              border: 1px solid var(--border);
+            "
+          >
+            <h3 id="ins-water" style="font-size: 2rem; color: var(--primary); margin: 0">0 ml</h3>
+            <p style="color: var(--text-muted); margin-top: 0.3rem">Water Today</p>
+          </div>
+          <div
+            style="
+              background: var(--bg);
+              padding: 1rem;
+              border-radius: var(--radius);
+              text-align: center;
+              border: 1px solid var(--border);
+            "
+          >
+            <h3 id="ins-workouts" style="font-size: 2rem; color: var(--primary); margin: 0">0</h3>
+            <p style="color: var(--text-muted); margin-top: 0.3rem">Routines Done</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interval Timer -->
+      <section id="timer">
+        <h2>Interval Timer</h2>
+        <div style="text-align: center">
+          <span class="timer-phase" id="timer-phase">Ready</span>
+        </div>
+        <div class="timer-display" id="timer-display">00:00</div>
+        <div class="grid-2">
+          <input type="number" id="work-sec" placeholder="Work (sec)" value="30" min="5" />
+          <input type="number" id="rest-sec" placeholder="Rest (sec)" value="10" min="5" />
+        </div>
+        <div class="timer-controls">
+          <button id="timer-start" onclick="startTimer()">Start</button>
+          <button class="secondary" onclick="pauseTimer()">Pause</button>
+          <button class="danger" onclick="resetTimer()">Reset</button>
+        </div>
+      </section>
+
+      <!-- Calorie Calculator -->
+      <section id="calories">
+        <h2>Calorie & Macro Calculator</h2>
+        <div class="grid-2">
+          <input type="number" id="cal-age" placeholder="Age" />
+          <select id="cal-gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <input type="number" id="cal-weight" placeholder="Weight (kg)" />
+          <input type="number" id="cal-height" placeholder="Height (cm)" />
+        </div>
+        <select id="cal-activity">
+          <option value="1.2">Sedentary</option>
+          <option value="1.375">Lightly Active</option>
+          <option value="1.55" selected>Moderately Active</option>
+          <option value="1.725">Very Active</option>
+          <option value="1.9">Extra Active</option>
+        </select>
+        <button onclick="calcCalories()">Calculate TDEE</button>
+        <div
+          id="cal-result"
+          style="
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--primary-dim);
+            border-radius: var(--radius);
+            display: none;
+            text-align: center;
+          "
+        ></div>
+      </section>
+
+      <!-- Exercise Library -->
+      <section id="exercises">
+        <h2>Exercise Library</h2>
+        <input
+          type="text"
+          id="ex-search"
+          placeholder="Search exercises..."
+          oninput="renderExercises()"
+        />
+        <div class="filter-bar" id="ex-filters"></div>
+        <div class="exercise-grid" id="ex-grid"></div>
+      </section>
+
+      <!-- Export Data -->
+      <section id="export">
+        <h2>Export Data</h2>
+        <button class="export-btn" onclick="exportData()">Download CSV Report</button>
+        <div
+          id="export-status"
+          style="margin-top: 0.5rem; text-align: center; color: var(--primary); display: none"
+        >
+          Export ready!
+        </div>
+      </section>
+    </main>
+
+    <script>
+      /**
+       * FitnessPro Main App Logic
+       * TODO: The file is getting a bit large, maybe consider splitting this into modules
+       * or importing a small framework if we add more features later.
+       */
+
+      // --- Theme Handling ---
+      const html = document.documentElement;
+      const themeToggle = document.getElementById("themeToggle");
+      const savedTheme = localStorage.getItem("fp_theme") || "dark";
+      html.setAttribute("data-theme", savedTheme);
+      themeToggle.textContent = savedTheme === "dark" ? "◑" : "☀";
+
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("fp_theme", newTheme);
+        themeToggle.textContent = newTheme === "dark" ? "◑" : "☀";
+      });
+
+      // Navigation
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", () => document.getElementById("nav").classList.toggle("open"));
+      document
+        .querySelectorAll("nav a")
+        .forEach((a) =>
+          a.addEventListener("click", () =>
+            document.getElementById("nav").classList.remove("open"),
+          ),
+        );
+
+      // Audio Context for Beeps (used for timer alerts)
+      let audioCtx = null;
+      function playBeep(freq = 800, duration = 150, type = "sine") {
+        // Need to initialize context on first user interaction because of browser autoplay policies
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration / 1000);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration / 1000);
+      }
+
+      // Workout Routine
+      let routine = JSON.parse(localStorage.getItem("fp_routine") || "[]");
+      let workoutsDone = parseInt(localStorage.getItem("fp_workoutsDone") || "0");
+      document.getElementById("ins-workouts").textContent = workoutsDone;
+
+      function renderWorkout() {
+        const list = document.getElementById("workout-list");
+        list.innerHTML = routine.length
+          ? routinea
+              .map(
+                (ex, i) => `
+        <li style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0; border-bottom:1px solid var(--border);">
+          <span>${ex.name} <small style="color:var(--text-muted)">(${ex.muscle})</small></span>
+          <button class="secondary" style="width:auto; padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="removeFromRoutine(${i})">x</button>
+        </li>`,
+              )
+              .join("")
+          : '<li style="color:var(--text-muted); padding:1rem 0; text-align:center;">No exercises added yet.</li>';
+      }
+      function addToRoutine(ex) {
+        if (!routine.find((r) => r.name === ex.name)) {
+          routine.push(ex);
+          localStorage.setItem("fp_routine", JSON.stringify(routine));
+          renderWorkout();
+        }
+      }
+      function removeFromRoutine(i) {
+        routine.splice(i, 1);
+        localStorage.setItem("fp_routine", JSON.stringify(routine));
+        renderWorkout();
+      }
+      function clearWorkout() {
+        // Clear the array and update local storage
+        routine = [];
+        localStorage.setItem("fp_routine", JSON.stringify(routine));
+        renderWorkout();
+        
+        // Bump the completion counter!
+        workoutsDone++;
+        localStorage.setItem("fp_workoutsDone", workoutsDone);
+        document.getElementById("ins-workouts").textContent = workoutsDone;
+        console.log("Workout cleared. Total workouts done:", workoutsDone);
+      }
+
+      // Smart Routine Generator
+      let generatedRoutine = [];
+      const exerciseDB = [
+        {
+          name: "Push-ups",
+          muscle: "Chest",
+          equipment: ["bodyweight", "dumbbells", "gym"],
+          difficulty: 1,
+        },
+        {
+          name: "Squats",
+          muscle: "Legs",
+          equipment: ["bodyweight", "dumbbells", "gym"],
+          difficulty: 1,
+        },
+        { name: "Pull-ups", muscle: "Back", equipment: ["gym"], difficulty: 3 },
+        { name: "Dumbbell Rows", muscle: "Back", equipment: ["dumbbells", "gym"], difficulty: 2 },
+        { name: "Plank", muscle: "Core", equipment: ["bodyweight"], difficulty: 1 },
+        {
+          name: "Lunges",
+          muscle: "Legs",
+          equipment: ["bodyweight", "dumbbells", "gym"],
+          difficulty: 2,
+        },
+        {
+          name: "Shoulder Press",
+          muscle: "Shoulders",
+          equipment: ["dumbbells", "gym"],
+          difficulty: 2,
+        },
+        { name: "Bicep Curls", muscle: "Arms", equipment: ["dumbbells", "gym"], difficulty: 1 },
+        { name: "Tricep Dips", muscle: "Arms", equipment: ["bodyweight", "gym"], difficulty: 2 },
+        { name: "Deadlifts", muscle: "Back", equipment: ["gym"], difficulty: 3 },
+        { name: "Burpees", muscle: "Full Body", equipment: ["bodyweight"], difficulty: 3 },
+        { name: "Mountain Climbers", muscle: "Core", equipment: ["bodyweight"], difficulty: 2 },
+        {
+          name: "Russian Twists",
+          muscle: "Core",
+          equipment: ["bodyweight", "dumbbells"],
+          difficulty: 2,
+        },
+        {
+          name: "Calf Raises",
+          muscle: "Legs",
+          equipment: ["bodyweight", "dumbbells", "gym"],
+          difficulty: 1,
+        },
+        {
+          name: "Dumbbell Bench Press",
+          muscle: "Chest",
+          equipment: ["dumbbells", "gym"],
+          difficulty: 2,
+        },
+        { name: "Leg Press", muscle: "Legs", equipment: ["gym"], difficulty: 2 },
+        { name: "Lat Pulldowns", muscle: "Back", equipment: ["gym"], difficulty: 2 },
+        { name: "Dumbbell Flyes", muscle: "Chest", equipment: ["dumbbells", "gym"], difficulty: 2 },
+      ];
+
+      function generateRoutine() {
+        const goal = document.getElementById("gen-goal").value;
+        const time = parseInt(document.getElementById("gen-time").value);
+        const equipment = document.getElementById("gen-equip").value;
+        const level = document.getElementById("gen-level").value;
+
+        let candidates = exerciseDB.filter((ex) => ex.equipment.includes(equipment));
+        if (level === "beginner") candidates = candidates.filter((ex) => ex.difficulty <= 2);
+        else if (level === "advanced") candidates = candidates.filter((ex) => ex.difficulty >= 2);
+
+        candidates = candidates.sort(() => 0.5 - Math.random()).slice(0, 6);
+
+        let config = { sets: 3, reps: "10-12", rest: 60 };
+        if (goal === "fatloss") config = { sets: 3, reps: "12-15", rest: 30 };
+        if (goal === "strength") config = { sets: 4, reps: "5-8", rest: 120 };
+
+        if (time <= 20) {
+          config.sets = 2;
+          config.rest = Math.max(config.rest - 20, 20);
+        } else if (time >= 45) {
+          config.sets += 1;
+        }
+
+        if (level === "beginner") {
+          config.reps = "8-10";
+          config.rest += 15;
+        }
+        if (level === "advanced") {
+          config.reps = "12-15";
+          config.rest = Math.max(config.rest - 15, 30);
+        }
+
+        generatedRoutine = candidates.map((ex, i) => ({
+          ...ex,
+          sets: config.sets,
+          reps: config.reps,
+          rest: config.rest,
+          order: i + 1,
+        }));
+
+        displayGenerated();
+      }
+
+      function displayGenerated() {
+        const list = document.getElementById("gen-list");
+        list.innerHTML = generatedRoutine
+          .map(
+            (ex) => `
+        <div class="gen-item">
+          <div>
+            <strong>${ex.order}. ${ex.name}</strong>
+            <div class="gen-details">${ex.muscle} | ${ex.sets} sets x ${ex.reps} reps | ${ex.rest}s rest</div>
+          </div>
+        </div>
+      `,
+          )
+          .join("");
+        document.getElementById("gen-output").classList.add("active");
+        playBeep(800, 100);
+      }
+
+      function loadGeneratedToWorkout() {
+        generatedRoutine.forEach((ex) => addToRoutine({ name: ex.name, muscle: ex.muscle }));
+        document.getElementById("gen-output").classList.remove("active");
+        playBeep(1200, 150);
+        alert("Routine added to your workout!");
+      }
+
+      // Interval Timer
+      let timerInterval = null,
+        timeLeft = 0,
+        currentPhase = "work",
+        isTimerRunning = false;
+      function updateTimerDisplay() {
+        const m = Math.floor(timeLeft / 60)
+          .toString()
+          .padStart(2, "0");
+        const s = (timeLeft % 60).toString().padStart(2, "0");
+        document.getElementById("timer-display").textContent = `${m}:${s}`;
+        const phaseEl = document.getElementById("timer-phase");
+        phaseEl.textContent = currentPhase === "work" ? "WORK" : "REST";
+        phaseEl.className = `timer-phase ${currentPhase}`;
+      }
+      function startTimer() {
+        if (isTimerRunning) return;
+        const work = parseInt(document.getElementById("work-sec").value) || 30;
+        const rest = parseInt(document.getElementById("rest-sec").value) || 10;
+        if (!timeLeft) {
+          timeLeft = work;
+          currentPhase = "work";
+        }
+        isTimerRunning = true;
+        updateTimerDisplay();
+        document.getElementById("timer-start").textContent = "Running";
+        playBeep(1000, 200);
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          if (timeLeft <= 0) {
+            playBeep(currentPhase === "work" ? 1200 : 800, 300);
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            currentPhase = currentPhase === "work" ? "rest" : "work";
+            timeLeft =
+              currentPhase === "work"
+                ? parseInt(document.getElementById("work-sec").value) || 30
+                : parseInt(document.getElementById("rest-sec").value) || 10;
+            updateTimerDisplay();
+          }
+        }, 1000);
+      }
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        document.getElementById("timer-start").textContent = "Resume";
+      }
+      function resetTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timeLeft = 0;
+        document.getElementById("timer-display").textContent = "00:00";
+        document.getElementById("timer-phase").textContent = "Ready";
+        document.getElementById("timer-phase").className = "timer-phase";
+        document.getElementById("timer-start").textContent = "Start";
+      }
+
+      // Calorie Calculator
+      function calcCalories() {
+        const age = parseFloat(document.getElementById("cal-age").value);
+        const gender = document.getElementById("cal-gender").value;
+        const weight = parseFloat(document.getElementById("cal-weight").value);
+        const height = parseFloat(document.getElementById("cal-height").value);
+        const activity = parseFloat(document.getElementById("cal-activity").value);
+        const box = document.getElementById("cal-result");
+        if (!age || !weight || !height) return (box.innerHTML = "Fill all fields");
+        let bmr = 10 * weight + 6.25 * height - 5 * age;
+        bmr += gender === "male" ? 5 : -161;
+        const tdee = Math.round(bmr * activity);
+        const protein = Math.round(weight * 1.6);
+        const fats = Math.round((tdee * 0.25) / 9);
+        const carbs = Math.round((tdee - protein * 4 - fats * 9) / 4);
+        box.style.display = "block";
+        box.innerHTML = `<strong>TDEE: ${tdee} kcal/day</strong><br><small>Protein: ${protein}g | Carbs: ${carbs}g | Fats: ${fats}g</small>`;
+        localStorage.setItem("fp_tdee", tdee);
+      }
+
+      // Exercise Library
+      const exercises = [
+        { name: "Push-ups", muscle: "Chest", desc: "Classic bodyweight chest & triceps builder." },
+        { name: "Squats", muscle: "Legs", desc: "Fundamental lower body compound movement." },
+        { name: "Pull-ups", muscle: "Back", desc: "Upper body pulling strength & width." },
+        { name: "Plank", muscle: "Core", desc: "Isometric core stability & endurance." },
+        { name: "Lunges", muscle: "Legs", desc: "Unilateral leg strength & balance." },
+        { name: "Dumbbell Rows", muscle: "Back", desc: "Horizontal pull for thickness & posture." },
+        {
+          name: "Shoulder Press",
+          muscle: "Shoulders",
+          desc: "Overhead pressing for delt development.",
+        },
+        { name: "Bicep Curls", muscle: "Arms", desc: "Isolation for bicep peak & size." },
+        { name: "Tricep Dips", muscle: "Arms", desc: "Compound push for triceps & chest." },
+        { name: "Deadlifts", muscle: "Back", desc: "Full posterior chain & grip strength." },
+        { name: "Calf Raises", muscle: "Legs", desc: "Lower leg isolation & ankle stability." },
+        { name: "Russian Twists", muscle: "Core", desc: "Rotational core strength & obliques." },
+      ];
+      let activeFilter = "All";
+      function initFilters() {
+        const muscles = ["All", ...new Set(exercises.map((e) => e.muscle))];
+        document.getElementById("ex-filters").innerHTML = muscles
+          .map(
+            (m) =>
+              `<button class="${m === activeFilter ? "active" : ""}" onclick="setFilter('${m}')">${m}</button>`,
+          )
+          .join("");
+      }
+      function setFilter(m) {
+        activeFilter = m;
+        initFilters();
+        renderExercises();
+      }
+      function renderExercises() {
+        const search = document.getElementById("ex-search").value.toLowerCase();
+        const filtered = exercises.filter(
+          (e) =>
+            (activeFilter === "All" || e.muscle === activeFilter) &&
+            e.name.toLowerCase().includes(search),
+        );
+        document.getElementById("ex-grid").innerHTML = filtered
+          .map(
+            (e) => `
+        <div class="exercise-card">
+          <h3>${e.name}</h3>
+          <div class="muscle">${e.muscle}</div>
+          <div class="desc">${e.desc}</div>
+          <button onclick='addToRoutine(${JSON.stringify(e).replace(/'/g, "\\'")})'>Add to Routine</button>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      // BMI
+      function calcBMI() {
+        const w = parseFloat(document.getElementById("weight").value);
+        const h = parseFloat(document.getElementById("height").value) / 100;
+        const box = document.getElementById("bmi-result");
+        if (!w || !h) return (box.innerHTML = "Enter valid values");
+        const bmi = (w / (h * h)).toFixed(1);
+        const cat =
+          bmi < 18.5 ? "Underweight" : bmi < 25 ? "Normal" : bmi < 30 ? "Overweight" : "Obese";
+        box.style.display = "block";
+        box.innerHTML = `<strong>BMI: ${bmi}</strong> (${cat})`;
+        localStorage.setItem("fp_bmi", bmi);
+        document.getElementById("ins-bmi").textContent = bmi;
+      }
+
+      // Water Intake Tracker
+      const WATER_GOAL = 2500;
+      const today = new Date().toISOString().split("T")[0];
+      const savedWaterDate = localStorage.getItem("fp_waterDate");
+      let waterIntake = parseInt(localStorage.getItem("fp_water") || "0");
+
+      if (savedWaterDate !== today) {
+        waterIntake = 0;
+        localStorage.setItem("fp_water", 0);
+        localStorage.setItem("fp_waterDate", today);
+      }
+
+      function updateWaterUI() {
+        document.getElementById("water-display").textContent = `${waterIntake} ml`;
+        document.getElementById("ins-water").textContent = `${waterIntake} ml`;
+        const percent = Math.min((waterIntake / WATER_GOAL) * 100, 100);
+        document.getElementById("water-progress").style.width = `${percent}%`;
+        const fill = document.getElementById("water-progress");
+        if (waterIntake >= WATER_GOAL) {
+          fill.style.background = "#00e676";
+          fill.style.boxShadow = "0 0 12px rgba(0,230,118,0.6)";
+        } else {
+          fill.style.background = "linear-gradient(90deg, #00e676, #00c853)";
+          fill.style.boxShadow = "none";
+        }
+      }
+
+      function addWater(amount) {
+        waterIntake += amount;
+        localStorage.setItem("fp_water", waterIntake);
+        updateWaterUI();
+        playBeep(600, 80);
+        if (waterIntake >= WATER_GOAL && waterIntake - amount < WATER_GOAL) {
+          playBeep(1200, 300);
+          if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        }
+      }
+
+      function resetWater() {
+        waterIntake = 0;
+        localStorage.setItem("fp_water", 0);
+        localStorage.setItem("fp_waterDate", today);
+        updateWaterUI();
+      }
+
+      // Export Data
+      function exportData() {
+        const data = {
+          bmi: localStorage.getItem("fp_bmi") || "--",
+          water: `${waterIntake} ml`,
+          workoutsDone: localStorage.getItem("fp_workoutsDone") || 0,
+          routine: JSON.parse(localStorage.getItem("fp_routine") || "[]")
+            .map((e) => e.name)
+            .join(", "),
+        };
+        const csvRows = [
+          ["Metric", "Value"],
+          ["Last BMI", data.bmi],
+          ["Water Today", data.water],
+          ["Routines Completed", data.workoutsDone],
+          ["Saved Routine", data.routine],
+        ];
+        const csvContent = csvRows
+          .map((row) => row.map((cell) => `"${cell}"`).join(","))
+          .join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `fitnesspro_export_${new Date().toISOString().split("T")[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        const status = document.getElementById("export-status");
+        status.style.display = "block";
+        setTimeout(() => (status.style.display = "none"), 3000);
+      }
+
+      // PWA Setup
+      function setupPWA() {
+        const manifest = {
+          name: "FitnessPro",
+          short_name: "FitnessPro",
+          start_url: ".",
+          display: "standalone",
+          background_color: "#0f1115",
+          theme_color: "#00e676",
+          icons: [
+            {
+              src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300e676' font-weight='bold'>FP</text></svg>",
+              sizes: "192x192",
+              type: "image/svg+xml",
+            },
+          ],
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const link = document.createElement("link");
+        link.rel = "manifest";
+        link.href = manifestURL;
+        document.head.appendChild(link);
+      }
+
+      // Init
+      window.addEventListener("DOMContentLoaded", () => {
+        renderWorkout();
+        initFilters();
+        renderExercises();
+        setupPWA();
+        updateWaterUI();
+        document.getElementById("ins-bmi").textContent = localStorage.getItem("fp_bmi") || "--";
+      });
+      window.addEventListener("beforeunload", () => {
+        clearInterval(timerInterval);
+      });
+    </script>
+  </body>
+</html>
